@@ -7,11 +7,12 @@
 </head>
 <body>
 testing
-<input id="Connectbutton" type="button" name="start" onclick=connect('https://api.github.com/gists/public'); value="test" />
+<input id="Connectbutton" type="button" name="start" onclick=getGists(response); value="test" />
 
 <span id="ajaxButton" style="cursor: pointer; text-decoration: underline">
   Make a request
 </span>
+<div id="gists"></div>
 
 </body>
 </html>
