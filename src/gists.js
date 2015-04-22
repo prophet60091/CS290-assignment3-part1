@@ -1,39 +1,48 @@
-function connect(){
+var req;
+//some date stuff for git requests
+var dateOff = (  60 * 1000); // minute
+var d = new Date();
+d.setTime(d.getTime() - dateOff);
+gitDate = d.toISOString();
+var response;
+function connect(url) {
 
-    var url = 'https://api.github.com/gists/public';
-    var req = new XMLHttpRequest();
-    var dateOff = (24*60*60*1000); // one day
-    var myDate = new Date();
-    myDate.setTime(myDate.getTime() - dateOff);
-    var testing;
+    req = new XMLHttpRequest();
 
     // make sure it got somewhere
-    if (!req)throw 'Something fucked up';
+    if (!req)console.log( 'Something broke with the request to ' +  url);
 
-    req.onreadystatechange= function(){
-        //Check the state
-
-        //check the response
-        if (req.status === 200) {
-
-        } else {
-            console.log('Received a response other than 200');
-            console.log(req.statusText);
-        }
-        if (req.readyState === 4) {
-            // everything is good, the response is received
-            console.log("it works");
-            testing = JSON.parse(this.responseText);
-        }
-
-    };
+    req.onreadystatechange = alerts;
     req.open('GET', url);
     req.send();
 
-}
 
+    function alerts() {
+
+        //Check the state
+        if (req.readyState === 4) {
+            //check the response
+            if (req.status === 200) {
+                // everything is good, the response is received
+                console.log("it works");
+                response = JSON.parse(req.responseText);
+                if(response) {
+                    console.log('I have a response');
+                    localStorage.setItem("gists", response[0].url);
+                }
+            }else{
+                console.log('Received a response other than 200');
+                console.log(req.statusText);
+            }
+        }
+
+    }
+
+
+}
 window.onload = function(){
-    connect();
+   console.log('Connecting...');
+
 
 };
 //document.getElementById("connectButton").onclick =function(){connect();};
